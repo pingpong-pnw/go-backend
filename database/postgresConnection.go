@@ -1,12 +1,16 @@
 package database
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/pingpong-pnw/go-backend/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+var DB *gorm.DB
 
 func PostgresConnect() {
 	if err := godotenv.Load(); err != nil {
@@ -19,9 +23,11 @@ func PostgresConnect() {
 	password := os.Getenv("postgresPassword")
 	name := os.Getenv("postgresName")
 
-	dsn := "host=" + host + "user=" + user + "password=" + password + "dbname=" + name + "port=" + port + "sslmode=disable"
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", host, user, password, name, port)
+	connection, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Could not connect to PostgresSQL")
 	}
+	DB = connection
+	connection.AutoMigrate(models.Users{})
 }
