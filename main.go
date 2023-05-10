@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"github.com/pingpong-pnw/go-backend/database"
 	"github.com/pingpong-pnw/go-backend/routes"
 )
@@ -10,7 +10,8 @@ func main() {
 
 	database.PostgresConnect()
 
-	app := fiber.New()
+	app := gin.Default()
 	routes.Setup(app)
-	app.Listen(":8000")
+	app.Run(":8000")
+
 }

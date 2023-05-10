@@ -1,12 +1,12 @@
 package routes
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"github.com/pingpong-pnw/go-backend/controllers"
 )
 
-func Setup(app *fiber.App) {
+func Setup(app *gin.Engine) {
 
-	app.Post("/api/v1/register", controllers.Register)
+	app.POST("/api/v1/register", controllers.Register)
 
 }
