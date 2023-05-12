@@ -43,11 +43,6 @@ func Register(ctx *gin.Context) {
 }
 
 func Login(ctx *gin.Context) {
-	// TODO Login logic here
-
-}
-
-func Login(ctx *gin.Context) {
 
 	var data models.Login
 	var user models.Users
