@@ -54,11 +54,24 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
+	// Qurry data in table Users and return user data if user data exists
 	if err := database.DB.Where("email = ?", data.Email).First(&user); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized, your Email are not exists. Please register an account.",
 			"error":   err,
 		})
+		return
 	}
 
+	// Compare Hash Password in returned data with Logged in Password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password)); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Unauthorized, Password has incorrect. Please use forgot password.",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// return Login Success message and user data to client
+	ctx.JSON(http.StatusOK, &user)
 }
