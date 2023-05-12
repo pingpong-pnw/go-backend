@@ -39,5 +39,10 @@ func Register(ctx *gin.Context) {
 
 	database.DB.Create(&userData)
 
-	ctx.JSON(http.StatusAccepted, &userData)
+	ctx.JSON(http.StatusOK, &userData)
+}
+
+func Login(ctx *gin.Context) {
+	// TODO Login logic here
+
 }
