@@ -46,3 +46,24 @@ func Login(ctx *gin.Context) {
 	// TODO Login logic here
 
 }
+
+func Login(ctx *gin.Context) {
+
+	var data models.Login
+	var user models.Users
+	if err := ctx.ShouldBindJSON(&data); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid inputs, Please check your inputs",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	if err := database.DB.Where("email = ?", data.Email).First(&user); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Unauthorized, your Email are not exists. Please register an account.",
+			"error":   err,
+		})
+	}
+
+}
