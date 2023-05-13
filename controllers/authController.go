@@ -34,7 +34,7 @@ func Register(ctx *gin.Context) {
 		LastName:     data.LastName,
 		Email:        data.Email,
 		Password:     string(hashPassword),
-		LastedUpdate: time.Now(),
+		LastedUpdate: time.Now().Unix(),
 	}
 
 	database.DB.Create(&userData)

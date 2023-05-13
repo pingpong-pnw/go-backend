@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -12,5 +10,5 @@ type Users struct {
 	LastName     string    `json:"lastname" binding:"required,max=30" gorm:"type:varchar(30);not null"`
 	Email        string    `json:"email" binding:"required,email" gorm:"uniqueIndex;not null"`
 	Password     string    `json:"password" binding:"required" gorm:"not null"`
-	LastedUpdate time.Time
+	LastedUpdate int64     `json:"-" gorm:"autoUpdateTime:milli"`
 }

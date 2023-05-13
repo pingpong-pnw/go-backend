@@ -8,5 +8,6 @@ import (
 func Setup(app *gin.Engine) {
 
 	app.POST("/api/v1/register", controllers.Register)
+	app.POST("/api/v1/login", controllers.Login)
 
 }
