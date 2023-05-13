@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/pingpong-pnw/go-backend/database"
 	"github.com/pingpong-pnw/go-backend/models"
 	"golang.org/x/crypto/bcrypt"
@@ -39,7 +40,7 @@ func Register(ctx *gin.Context) {
 
 	database.DB.Create(&userData)
 
-	ctx.JSON(http.StatusOK, &userData)
+	ctx.JSON(http.StatusOK, userData)
 }
 
 func Login(ctx *gin.Context) {
@@ -54,11 +55,11 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	// Qurry data in table Users and return user data if user data exists
-	if err := database.DB.Where("email = ?", data.Email).First(&user); err != nil {
+	database.DB.Where("email = ?", data.Email).First(&user)
+
+	if user.Id == uuid.Nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized, your Email are not exists. Please register an account.",
-			"error":   err,
 		})
 		return
 	}
@@ -73,5 +74,5 @@ func Login(ctx *gin.Context) {
 	}
 
 	// return Login Success message and user data to client
-	ctx.JSON(http.StatusOK, &user)
+	ctx.JSON(http.StatusOK, user)
 }
